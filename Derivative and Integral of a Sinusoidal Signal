@@ -1,0 +1,49 @@
+// Pedro Eduardo Oliveira de Andrade
+// Mechatronics Engineering
+// Derivative and Integral of a sinusoidal signal
+
+clc
+clear
+
+delta = 0.001
+f = 10
+w = 2*%pi*f
+k = 1
+
+vOut = [] // create a vector for the signal
+tOut = [] // create a time vector
+dvDtOut = [] // create a vector for the derivative
+vIntOut = [] // create a vector for the integral
+
+testOut = []
+
+vAnt = 0 //initializes the variable vAnt (V_previous) to execute the derivative and integral
+
+for t = 0:delta:1
+    v = sin(w*t) //sinal senoidal
+    
+    //Implementing the derivative of the dv/dt signal    
+    dvDt = ((v - vAnt)/delta) 
+    //Implementing the sign integral 
+    vInt = ((vAnt - v)/delta)/(2*w)
+    vAnt = v
+    
+    vOut(k) = v
+    tOut(k) = t
+    dvDtOut(k) = dvDt
+    vIntOut(k) = vInt
+    
+    k = k+1   
+    
+end
+
+subplot(111)
+plot(tOut,vOut)
+plot(tOut,dvDtOut, 'r') // r makes the signal plot red
+plot(tOut,vIntOut, 'g') // g makes the signal plot green 
+xlabel("$\text {t[s]}$", "fontsize", 4)
+ylabel("$\text {v(t)}$", "fontsize", 4)
+legend('$\sin(wt)$','$\frac{d}{dt}sin(wt)$','$\int{sin(wt)}$')
+xtitle("Derivada e Integral de um sinal senoidal")
+xgrid
+
