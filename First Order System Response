@@ -1,0 +1,63 @@
+//Pedro Eduardo Oliveira de Andrade
+//Mechatronics Engineering
+//First Order System Response
+
+clc
+clear
+
+
+// tal equals 0.1
+
+tal = 0.1;
+
+time = [];
+yOut = [];
+k = 1;
+
+for t = 0:0.001:10
+    y = k*(1-exp(-t/tal));
+    yOut(k) = y;
+    time(k) = t;
+    k = k+1;
+end
+
+// tal equals 0.5
+
+talS = 0.5;
+
+timeS = [];
+yOutS = [];
+
+for tS = 0:0.001:10
+    yS = k*(1-exp(-tS/talS));
+    yOutS(k) = yS;
+    timeS(k) = tS;
+    k = k+1;
+end
+
+// tal equals 0.8
+
+talT = 0.8;
+
+timeT = [];
+yOutT = [];
+
+for tT = 0:0.001:10
+    yT = k*(1-exp(-tT/talT));
+    yOutT(k) = yT;
+    timeT(k) = tT;
+    k = k+1;
+end
+
+// Plotting the responses for the zeta variation
+
+subplot(111)
+plot(time,yOut)
+plot(timeS,yOutS, 'r')
+plot(timeT,yOutT, 'g')
+
+xlabel("$\text {t[s]}$", "fontsize", 4)
+ylabel("$\text {y(t)}$", "fontsize", 4)
+legend('$\tau = 0.1$','$\tau = 0.5$','$\tau = 0.8$')
+xtitle("First Order System Response")
+xgrid
