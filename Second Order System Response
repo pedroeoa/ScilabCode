@@ -1,0 +1,66 @@
+clc
+clear
+
+//Zeta equals 0.1 and omega equals 2
+
+zeta = 0.1
+wn = 2
+r = sqrt(1-zeta^2)
+
+time = []
+yOut = []
+k=1
+
+for t = 0:0.001:10
+    y=1-((%e^((-zeta)*wn*t))/r)*sin(wn*r*t+atan(r/zeta))
+    yOut(k)=y
+    time(k)=t
+    k = k+1
+end
+
+//Zeta equals 0.5 and omega equals 2
+
+zetaS = 0.5
+wnS = 2
+rS = sqrt(1-zetaS^2)
+
+timeS = []
+yOutS = []
+
+for tS = 0:0.001:10
+    yS=1-((%e^((-zetaS)*wnS*tS))/rS)*sin(wnS*rS*tS+atan(rS/zetaS))
+    yOutS(k)=yS
+    timeS(k)=tS
+    k = k+1
+end
+
+//Zeta equals 2 and omega equals 2
+
+zetaT = 2
+wnT = 2
+rT = sqrt(1-zetaT^2)
+
+timeT = []
+yOutT = []
+
+for tT = 0:0.001:10
+    yT=1-((%e^((-zetaT)*wnT*tT))/rT)*sin(wnT*rT*tT+atan(rT/zetaT))
+    yOutT(k)=yT
+    timeT(k)=tT
+    k = k+1
+end
+
+// Plotting the responses for the zeta variation
+
+subplot(111)
+plot(time,yOut)
+subplot(111)
+plot(timeS,yOutS, 'r')
+subplot(111)
+plot(timeT,yOutT, 'g')
+
+xlabel("$\text {t[s]}$", "fontsize", 4)
+ylabel("$\text {y(t)}$", "fontsize", 4)
+legend('$\zeta = 0.1$','$\zeta = 0.5$','$\zeta = 2$')
+xtitle("Second Order System Response")
+xgrid
