@@ -1,0 +1,66 @@
+const int led1 = 13 ;
+const int led2 = 12;// o led esta ligado ao pino 09
+const int button = 2;   // o botao esta ligado ao pino 02
+ 
+boolean lastButton = LOW;     // variavel que guarda o ultimo estado do botao (até porque comecamos com o botao sempre em LOW via resistor PULL-DOWN)
+boolean currentButton = LOW;    // variavel contendo o atual estado do botao (e ainda utilizamos aqui um resistor pull-down)
+boolean ledOn = false;      // o atual estado do led (on/off) (o led começa em OFF porque o button começa em LOW) PS: (FALSE = LOW = 0)
+ 
+ 
+void setup() 
+{
+  pinMode(led1, OUTPUT);     // configura o pino do led como saida
+  pinMode(button, INPUT);   // configura o pino do botao como entrada (não é obrigatório pois por padrão os pinos são configurados como ENTRADA)
+  pinMode(led2, OUTPUT);
+  Serial.begin(9600);     // iniciamos a saida serial para DEBUG
+}
+ 
+ 
+/*
+ * -------------------------------------------------------------------
+ * FUNCAO DEBOUNCING
+ * PASSAMOS O ESTADO "ANTERIOR" DO BOTAO E RECEBEMOS DE VOLTA O ESTADO
+ * ATUAL DO BOTAO DEPOIS DO "DEBOUNCING"
+ * -------------------------------------------------------------------
+ */
+ 
+boolean debounce(boolean last)
+  {
+    boolean current = digitalRead(button);      // le o estado atual do botao
+    
+    if(last != current)
+    {
+      delay(3);     // espera 3ms --> AQUI VAI O "SEGREDO" DO "EFETIVO E SEGURO, ALÉM DE RÁPIDO DEBOUNCING"
+      current = digitalRead(button);      // le NOVAMENTE o estado do botao apos o "debounce"  
+    }
+    return current;     // retorna o valor atualizado do botao (button)
+  }
+ 
+ 
+void loop() 
+{
+  digitalWrite(led1, HIGH);
+  currentButton = debounce(lastButton);     // Lê o estado do botao após o debounce
+                                            // aqui passamos pela FUNÇÃO "debounce"
+                                            // ANTES de podermos OBTER o VALOR FINAL
+                                            // do ATUAL ESTADO DO BOTÃO! (R.Costa.)
+ 
+    if(lastButton == LOW && currentButton == HIGH)      // se o botao foi PRESSIONADO
+    {
+      
+      ledOn = !ledOn;     // alternamos o valor do LED
+    }
+    
+    lastButton = currentButton;     // redefinimos o valor do botao
+ 
+    digitalWrite(led2, ledOn);     // alternamos o estado do led
+    /*bool estadoLed2 = digitalRead(led2);
+    if(estadoLed2 == HIGH){
+      Serial.println("Motor Desligado");
+      delay(1000);
+    }
+    if(estadoLed2 == LOW){
+      Serial.println("Motor Ligado");
+      delay(1000);
+    }*/
+}
